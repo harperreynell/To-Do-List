@@ -1,9 +1,18 @@
 package flow
 
 import (
-	l "../listHandling"
+	"fmt"
+	l "todolist/listHandling"
 )
 
-func flow() {
+func Flow() {
 	todos := make([]l.Todos, 0)
+	fmt.Println(todos)
+
+	l.ReadTask(&todos)
+	l.ReadTask(&todos)
+	l.ReadTask(&todos)
+	l.ReadTask(&todos)
+	l.ChangeStatus(&todos[2])
+	l.PrintTodos(todos)
 }

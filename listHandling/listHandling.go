@@ -19,7 +19,7 @@ func newTodo(task string, id int) Todos {
 	return todo
 }
 
-func changeStatus(task *Todos) {
+func ChangeStatus(task *Todos) {
 	task.status = "closed"
 }
 
@@ -29,7 +29,7 @@ func appendTask(todoList []Todos, todo string) []Todos {
 	return arr
 }
 
-func printTodos(todoList []Todos) {
+func PrintTodos(todoList []Todos) {
 	var status string
 	for i := range todoList {
 		if todoList[i].status == "closed" {
@@ -42,17 +42,10 @@ func printTodos(todoList []Todos) {
 	}
 }
 
-func readTask(todoList *[]Todos) {
+func ReadTask(todoList *[]Todos) {
 	var task string
 	fmt.Scanln(&task)
 	*todoList = appendTask(*todoList, task)
 
 	//return todoList
 }
-
-//todos := make([]Todos, 0)
-//readTask(&todos)
-//readTask(&todos)
-//readTask(&todos)
-//changeStatus(&todos[2])
-//printTodos(todos)

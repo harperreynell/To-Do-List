@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	todos := make([]f.Todos, 0)
+	f.Flow()
 
 }
