@@ -29,6 +29,10 @@ func appendTask(todoList []Todos, todo string) []Todos {
 	return arr
 }
 
+func TaskByID(todoList []Todos, id int) *Todos {
+	return &todoList[id]
+}
+
 func PrintTodos(todoList []Todos) {
 	var status string
 	for i := range todoList {

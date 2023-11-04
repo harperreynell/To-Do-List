@@ -12,10 +12,6 @@ func printMenu() {
 	fmt.Println("\t99 Exit")
 }
 
-func taskByID(todoList []l.Todos, id int) *l.Todos {
-	return &todoList[id]
-}
-
 func Flow() {
 	todos := make([]l.Todos, 0)
 	var choice, id int = 1, 0
@@ -42,7 +38,7 @@ func Flow() {
 				fmt.Println("No such id")
 				continue
 			}
-			l.ChangeStatus(taskByID(todos, id))
+			l.ChangeStatus(l.TaskByID(todos, id))
 		}
 	}
 }
