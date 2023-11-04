@@ -19,8 +19,8 @@ func newTodo(task string, id int) Todos {
 	return todo
 }
 
-func ChangeStatus(task *Todos) {
-	task.Status = "closed"
+func ChangeStatus(task *Todos, status string) {
+	task.Status = status
 }
 
 func appendTask(todoList []Todos, todo string) []Todos {
@@ -31,6 +31,11 @@ func appendTask(todoList []Todos, todo string) []Todos {
 
 func TaskByID(todoList []Todos, id int) *Todos {
 	return &todoList[id]
+}
+
+func DeleteTaskByID(todoList []Todos, id int) []Todos {
+	copy(todoList[id:], todoList[id+1:])
+	return todoList[:len(todoList)-1]
 }
 
 func PrintTodos(todoList []Todos) {
@@ -44,10 +49,6 @@ func PrintTodos(todoList []Todos) {
 
 		fmt.Printf("[%s] id : %d, task: %s\n", status, todoList[i].Id, todoList[i].Todo)
 	}
-}
-
-func TaskById(todoList []Todos, id int) *Todos {
-	return &todoList[id]
 }
 
 func ReadTask(todoList *[]Todos) {

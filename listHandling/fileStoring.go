@@ -2,36 +2,38 @@ package listHandling
 
 import (
 	"encoding/json"
+	"fmt"
+	"os"
 )
 
-func toJson(data Todos) []byte {
-	b, err := json.Marshal(data)
-	if err != nil {
+func WriteJsonToFile(data []Todos) {
+	file, _ := os.Create("tasks.json")
+	encoder := json.NewEncoder(file)
+	if err := encoder.Encode(data); err != nil {
+		fmt.Println(err)
+		return
 	}
-
-	return b
 }
 
-func fromJson(data []byte) Todos {
-	var task Todos
-	err := json.Unmarshal(data, &task)
+func ReadJsonFromFile() []Todos {
+	file, err := os.Open("tasks.json")
 	if err != nil {
+		fmt.Println(err)
+		return nil
 	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
 
-	return task
-}
+		}
+	}(file)
 
-func Store() {
-	data := Todos{
-		Id:     1,
-		Status: "opened",
-		Todo:   "test1",
+	decoder := json.NewDecoder(file)
+	var taskList []Todos
+
+	if err := decoder.Decode(&taskList); err != nil {
+		fmt.Println(err)
+		return nil
 	}
-
-	b := toJson(data)
-	task := fromJson(b)
-
-	todoList := make([]Todos, 0)
-	todoList = append(todoList, task)
-	PrintTodos(todoList)
+	return taskList
 }
