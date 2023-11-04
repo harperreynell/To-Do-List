@@ -42,6 +42,10 @@ func PrintTodos(todoList []Todos) {
 	}
 }
 
+func TaskById(todoList []Todos, id int) *Todos {
+	return &todoList[id]
+}
+
 func ReadTask(todoList *[]Todos) {
 	var task string
 	fmt.Scanln(&task)
