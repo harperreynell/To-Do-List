@@ -41,4 +41,7 @@ func Flow() {
 			l.ChangeStatus(l.TaskByID(todos, id))
 		}
 	}
+
+	fmt.Println()
+	l.Store()
 }

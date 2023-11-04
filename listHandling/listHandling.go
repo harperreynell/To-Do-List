@@ -5,22 +5,22 @@ import (
 )
 
 type Todos struct {
-	id     int
-	status string
-	todo   string
+	Id     int    `json:"id"`
+	Status string `json:"status"`
+	Todo   string `json:"todo"`
 }
 
 func newTodo(task string, id int) Todos {
 	todo := Todos{
-		todo:   task,
-		id:     id,
-		status: "opened"}
+		Todo:   task,
+		Id:     id,
+		Status: "opened"}
 
 	return todo
 }
 
 func ChangeStatus(task *Todos) {
-	task.status = "closed"
+	task.Status = "closed"
 }
 
 func appendTask(todoList []Todos, todo string) []Todos {
@@ -36,13 +36,13 @@ func TaskByID(todoList []Todos, id int) *Todos {
 func PrintTodos(todoList []Todos) {
 	var status string
 	for i := range todoList {
-		if todoList[i].status == "closed" {
+		if todoList[i].Status == "closed" {
 			status = "✓"
 		} else {
 			status = "✗"
 		}
 
-		fmt.Printf("[%s] id : %d, task: %s\n", status, todoList[i].id, todoList[i].todo)
+		fmt.Printf("[%s] id : %d, task: %s\n", status, todoList[i].Id, todoList[i].Todo)
 	}
 }
 
