@@ -10,9 +10,6 @@ func Flow() {
 	fmt.Println(todos)
 
 	l.ReadTask(&todos)
-	l.ReadTask(&todos)
-	l.ReadTask(&todos)
-	l.ReadTask(&todos)
 	l.ChangeStatus(&todos[2])
 	l.PrintTodos(todos)
 }
