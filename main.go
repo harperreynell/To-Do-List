@@ -1,9 +1,10 @@
 package main
 
 import (
-	f "todolist/flow"
+	t "todolist/telegram"
 )
 
 func main() {
-	f.Flow()
+	//f.Flow()
+	t.Client()
 }
