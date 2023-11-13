@@ -2,6 +2,7 @@ package listHandling
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type Todos struct {
@@ -10,7 +11,7 @@ type Todos struct {
 	Todo   string `json:"todo"`
 }
 
-func newTodo(task string, id int) Todos {
+func NewTodo(task string, id int) Todos {
 	todo := Todos{
 		Todo:   task,
 		Id:     id,
@@ -24,7 +25,7 @@ func ChangeStatus(task *Todos, status string) {
 }
 
 func appendTask(todoList []Todos, todo string) []Todos {
-	arr := append(todoList, newTodo(todo, len(todoList)))
+	arr := append(todoList, NewTodo(todo, len(todoList)))
 
 	return arr
 }
@@ -38,22 +39,28 @@ func DeleteTaskByID(todoList []Todos, id int) []Todos {
 	return todoList[:len(todoList)-1]
 }
 
-func PrintTodos(todoList []Todos) {
-	var status string
+func PrintTodos(todoList []Todos) string {
+	var status, text string
+	text = ""
 	for i := range todoList {
 		if todoList[i].Status == "closed" {
 			status = "✓"
 		} else {
 			status = "✗"
 		}
-
-		fmt.Printf("[%s] id : %d, task: %s\n", status, todoList[i].Id, todoList[i].Todo)
+		id := strconv.Itoa(todoList[i].Id)
+		text += "[" + status + "] id : " + id + ", task: " + todoList[i].Todo + "\n"
+		//t.Client()
+		//log.Println(text)
+		//fmt.Printf("[%s] id : %d, task: %s\n", status, todoList[i].Id, todoList[i].Todo)
 	}
+
+	return text
 }
 
 func ReadTask(todoList *[]Todos) {
 	var task string
-	fmt.Scanln(&task)
+	_, _ = fmt.Scanln(&task)
 	*todoList = appendTask(*todoList, task)
 
 	//return todoList
