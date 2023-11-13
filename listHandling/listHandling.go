@@ -34,6 +34,16 @@ func TaskByID(todoList []Todos, id int) *Todos {
 	return &todoList[id]
 }
 
+func TaskId(todoList []Todos, id int) int {
+	for i := 0; i < len(todoList); i++ {
+		if todoList[i].Id == id {
+			return i
+		}
+	}
+
+	return -1
+}
+
 func DeleteTaskByID(todoList []Todos, id int) []Todos {
 	copy(todoList[id:], todoList[id+1:])
 	return todoList[:len(todoList)-1]
