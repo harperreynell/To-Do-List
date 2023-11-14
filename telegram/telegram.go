@@ -3,11 +3,12 @@ package telegram
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"os"
 )
 
 func Run() {
 	var err error
-	bot, err = tgbotapi.NewBotAPI("")
+	bot, err = tgbotapi.NewBotAPI(os.Getenv("TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
