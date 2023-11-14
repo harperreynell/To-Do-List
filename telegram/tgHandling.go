@@ -49,7 +49,7 @@ func handleMessage(message *tgbotapi.Message) {
 	if idCheck == -1 {
 		todoList := l.ReadJsonFromFile(message.Chat.ID)
 		index, _ := strconv.Atoi(text)
-		id := l.TaskId(todoList, index)
+		id := l.TaskId(todoList, index-1)
 		todoList = l.DeleteTaskByID(todoList, id)
 		l.WriteJsonToFile(todoList, message.Chat.ID)
 		bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Task was deleted successfully!"))

@@ -30,10 +30,6 @@ func appendTask(todoList []Todos, todo string) []Todos {
 	return arr
 }
 
-func TaskByID(todoList []Todos, id int) *Todos {
-	return &todoList[id]
-}
-
 func TaskId(todoList []Todos, id int) int {
 	for i := 0; i < len(todoList); i++ {
 		if todoList[i].Id == id {
@@ -58,7 +54,7 @@ func PrintTodos(todoList []Todos) string {
 		} else {
 			status = "✗"
 		}
-		id := strconv.Itoa(todoList[i].Id)
+		id := strconv.Itoa(todoList[i].Id + 1)
 		text += "[" + status + "] id : " + id + ", task: " + todoList[i].Todo + "\n"
 		//t.Client()
 		//log.Println(text)
