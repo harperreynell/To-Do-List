@@ -37,32 +37,31 @@ func handleMessage(message *tgbotapi.Message) {
 	}
 
 	log.Printf("%s wrote %s", user.FirstName, text)
-	log.Println(txt)
 	if txt == "" {
-		todoList := l.ReadJsonFromFile()
+		todoList := l.ReadJsonFromFile(message.Chat.ID)
 		todoList = append(todoList, l.NewTodo(text, len(todoList)))
-		l.WriteJsonToFile(todoList)
+		l.WriteJsonToFile(todoList, message.Chat.ID)
 		txt = text
 		bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Task was added successfully!"))
 		sendMenu(message.Chat.ID)
 	}
 
 	if idCheck == -1 {
-		todoList := l.ReadJsonFromFile()
+		todoList := l.ReadJsonFromFile(message.Chat.ID)
 		index, _ := strconv.Atoi(text)
 		id := l.TaskId(todoList, index)
 		todoList = l.DeleteTaskByID(todoList, id)
-		l.WriteJsonToFile(todoList)
+		l.WriteJsonToFile(todoList, message.Chat.ID)
 		bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Task was deleted successfully!"))
 		idCheck = 0
 		sendMenu(message.Chat.ID)
 	}
 	if idCheckStat == -1 {
-		todoList := l.ReadJsonFromFile()
+		todoList := l.ReadJsonFromFile(message.Chat.ID)
 		index, _ := strconv.Atoi(text)
 		id := l.TaskId(todoList, index)
 		l.ChangeStatus(&todoList[id], "closed")
-		l.WriteJsonToFile(todoList)
+		l.WriteJsonToFile(todoList, message.Chat.ID)
 		bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Task status was changed successfully!"))
 		idCheckStat = 0
 		sendMenu(message.Chat.ID)
@@ -82,6 +81,8 @@ func handleMessage(message *tgbotapi.Message) {
 func handleCommand(chatId int64, command string) {
 
 	switch command {
+	case "/start":
+		sendMenu(chatId)
 	case "/menu":
 		sendMenu(chatId)
 		break
@@ -95,7 +96,7 @@ func handleButton(query *tgbotapi.CallbackQuery) {
 	message := query.Message
 
 	if query.Data == printButton {
-		todoList := l.ReadJsonFromFile()
+		todoList := l.ReadJsonFromFile(message.Chat.ID)
 		text = "Your todo list:\n\n" + l.PrintTodos(todoList)
 		markup = MenuMarkup
 	} else if query.Data == addButton {

@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 )
 
-func WriteJsonToFile(data []Todos) {
-	file, _ := os.Create("tasks.json")
+func WriteJsonToFile(data []Todos, id int64) {
+	file, _ := os.Create("tasks" + strconv.Itoa(int(id)) + ".json")
 	encoder := json.NewEncoder(file)
 	if err := encoder.Encode(data); err != nil {
 		fmt.Println(err)
@@ -15,8 +16,8 @@ func WriteJsonToFile(data []Todos) {
 	}
 }
 
-func ReadJsonFromFile() []Todos {
-	file, err := os.Open("tasks.json")
+func ReadJsonFromFile(id int64) []Todos {
+	file, err := os.Open("tasks" + strconv.Itoa(int(id)) + ".json")
 	if err != nil {
 		fmt.Println(err)
 		return nil
