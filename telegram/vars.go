@@ -8,12 +8,13 @@ var (
 	printButton  = "Print tasks"
 	addButton    = "Add task"
 	deleteButton = "Delete task"
+	changeButton = "Change task status"
 	txt          = "1"
 	idCheck      = 0
+	stat         = "-"
+	idCheckStat  = 0
 
 	bot *tgbotapi.BotAPI
-
-	userState map[int64]string
 
 	MenuMarkup = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
@@ -24,6 +25,9 @@ var (
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData(deleteButton, deleteButton),
+		),
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData(changeButton, changeButton),
 		),
 	)
 )

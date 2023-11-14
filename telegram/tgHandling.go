@@ -57,6 +57,16 @@ func handleMessage(message *tgbotapi.Message) {
 		idCheck = 0
 		sendMenu(message.Chat.ID)
 	}
+	if idCheckStat == -1 {
+		todoList := l.ReadJsonFromFile()
+		index, _ := strconv.Atoi(text)
+		id := l.TaskId(todoList, index)
+		l.ChangeStatus(&todoList[id], "closed")
+		l.WriteJsonToFile(todoList)
+		bot.Send(tgbotapi.NewMessage(message.Chat.ID, "Task status was changed successfully!"))
+		idCheckStat = 0
+		sendMenu(message.Chat.ID)
+	}
 
 	var err error
 	if strings.HasPrefix(text, "/") {
@@ -89,7 +99,6 @@ func handleButton(query *tgbotapi.CallbackQuery) {
 		text = "Your todo list:\n\n" + l.PrintTodos(todoList)
 		markup = MenuMarkup
 	} else if query.Data == addButton {
-
 		msg := tgbotapi.NewMessage(message.Chat.ID, "Type in task:")
 		bot.Send(msg)
 		txt = ""
@@ -97,6 +106,10 @@ func handleButton(query *tgbotapi.CallbackQuery) {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "Type in id of task you want to delete:")
 		bot.Send(msg)
 		idCheck = -1
+	} else if query.Data == changeButton {
+		msg := tgbotapi.NewMessage(message.Chat.ID, "Type in id of task you want to change:")
+		bot.Send(msg)
+		idCheckStat = -1
 	}
 
 	callbackCfg := tgbotapi.NewCallback(query.ID, "")

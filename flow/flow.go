@@ -1,5 +1,7 @@
 package flow
 
+// For console application
+
 import (
 	"fmt"
 	l "todolist/listHandling"
