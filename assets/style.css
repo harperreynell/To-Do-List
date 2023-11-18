@@ -1,0 +1,15 @@
+body {
+    color: white;
+    background-color: black;
+    width: 50%;
+    margin: 0 auto;
+    font-size: 30px;
+}
+
+ul li {
+    cursor: pointer;
+}
+
+.done {
+    text-decoration: line-through;
+}
