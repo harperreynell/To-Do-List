@@ -1,7 +1,10 @@
 package main
 
-import t "todolist/telegram"
+import (
+	w "todolist/web"
+)
 
 func main() {
-	t.Run()
+	//t.Run()
+	w.Create()
 }
