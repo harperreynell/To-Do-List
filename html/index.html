@@ -6,20 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Todo Web</title>
     <link rel="stylesheet" href="/assets/style.css">
+
 </head>
 <body>
-<h1>{{ .Title }}</h1>
-<ul>
-    {{ range .Todos }}
-    {{ if .Done }}
-    <li class="done">{{.Item}}</li>
-    {{ else }}
-    <li>{{.Item}}</li>
-    {{ end }}
-
-    {{ end }}
-</ul>
-
-<script src="/assets/script.js" type="text/javascript"></script>
+    <h1>{{ .Title }}</h1>
+    <ul class="taskList">
+        {{ range .Todos }}
+            {{ if .Done }}
+                <li class="done">{{.Item}}</li>
+            {{ else }}
+                <li>{{.Item}}</li>
+            {{ end }}
+        {{ end }}
+    </ul>
+    <div>
+        <span style="float:left">
+            <form method="POST" action="/form">
+                <label style="margin-right: 5px">Type In Your Task</label><input class="input" name="task" type="text" value="" />
+                <input class="button1" type="submit" value="Add task" />
+            </form>
+        </span>
+        <span>
+            <form method="POST" action="/clear">
+                <input class="button1", type="submit" value="Clear tasks" style="margin-left: 10px"/>
+            </form>
+        </span>
+    </div>
+    <script src="/assets/script.js" type="text/javascript"></script>
 </body>
 </html>
