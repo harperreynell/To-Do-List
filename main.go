@@ -5,6 +5,5 @@ import (
 )
 
 func main() {
-	//t.Run()
 	w.Create()
 }
