@@ -1,8 +1,7 @@
 package flow
 
-//
-//// For console application
-//
+// For console application
+
 //import (
 //	"fmt"
 //	l "todolist/listHandling"

@@ -1,0 +1,39 @@
+body {
+    color: white;
+    background-color: black;
+    width: 50%;
+    margin: 0 auto;
+
+    font: 30px "DejaVu Sans Mono";
+}
+
+.input {
+    border: 2px solid white;
+    color: white;
+    background-color: black;
+    font: 20px "DejaVu Sans Mono";
+}
+
+.button1 {
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    font: 20px "DejaVu Sans Mono";
+}
+
+.button1:hover {
+    background-color: #36454F;
+    color: white;
+}
+
+.taskList {
+    cursor: pointer;
+}
+
+.done {
+    text-decoration: line-through;
+}
+
+h1 {
+    font: 30px "DejaVu Sans Mono";;
+}

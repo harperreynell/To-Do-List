@@ -1,9 +1,10 @@
-package web
+package main
 
 import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"os"
 )
@@ -30,19 +31,6 @@ func newTodo(task string, status bool) Todo {
 	}
 }
 
-func addTask(w http.ResponseWriter, r *http.Request) {
-	var task string
-	todoList = ReadJsonFromFile()
-	todoList = append(todoList, newTodo(task, false))
-
-	//data := PageData{
-	//	Title: "Your list",
-	//	Todos: todoList,
-	//}
-	//
-	//tpl.Execute(w, data)
-}
-
 func WriteJsonToFile(data []Todo) {
 	file, err := os.Create("tasks.json")
 	if err != nil {
@@ -51,7 +39,6 @@ func WriteJsonToFile(data []Todo) {
 	}
 	defer file.Close()
 
-	// Create a JSON encoder
 	encoder := json.NewEncoder(file)
 
 	if err := encoder.Encode(data); err != nil {
@@ -81,7 +68,6 @@ func ReadJsonFromFile() []Todo {
 }
 
 func todo(w http.ResponseWriter, r *http.Request) {
-	//WriteJsonToFile(Todos)
 	Todos := ReadJsonFromFile()
 
 	data := PageData{
@@ -101,8 +87,7 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 
 	todoList := ReadJsonFromFile()
 	todoList = append(todoList, newTodo(r.FormValue("task"), false))
-	//fmt.Fprintf(w, "Task: %s", r.FormValue("task"))
-	//printTodos(w, todoList)
+
 	WriteJsonToFile(todoList)
 	data := PageData{
 		Title: "Your list",
@@ -111,11 +96,61 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 	tpl.Execute(w, data)
 }
 
-func clearHandler(w http.ResponseWriter, r *http.Request) {
+func remove(s []Todo, i int) []Todo {
+	s = append(s[:i], s[i+1:]...)
+	return s
+}
+
+func toggleHandler(w http.ResponseWriter, r *http.Request) {
+	todos := ReadJsonFromFile()
+	var index struct {
+		Index int `json:"index"`
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&index); err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
+
+	todos[index.Index].Done = !todos[index.Index].Done
+
+	jsonResponse(w, todos)
+	WriteJsonToFile(todos)
+}
+
+// Helper function to send JSON responses
+func jsonResponse(w http.ResponseWriter, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	encoder := json.NewEncoder(w)
+	if err := encoder.Encode(data); err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+}
+func clearDoneHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		return
 	}
 
+	todoList := ReadJsonFromFile()
+
+	for i := 0; i < len(todoList); i++ {
+		if todoList[i].Done == true {
+			todoList = remove(todoList, i)
+		}
+	}
+
+	WriteJsonToFile(todoList)
+	data := PageData{
+		Title: "Your list",
+		Todos: todoList,
+	}
+
+	tpl.Execute(w, data)
+}
+
+func clearAllHandler(w http.ResponseWriter, r *http.Request) {
 	var todoList []Todo
 	WriteJsonToFile(todoList)
 	data := PageData{
@@ -126,8 +161,7 @@ func clearHandler(w http.ResponseWriter, r *http.Request) {
 	tpl.Execute(w, data)
 }
 
-func Create() {
-	//var task string
+func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "3000"
@@ -139,6 +173,11 @@ func Create() {
 	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	mux.HandleFunc("/", todo)
 	mux.HandleFunc("/form", formHandler)
-	mux.HandleFunc("/clear", clearHandler)
-	http.ListenAndServe(":"+port, mux)
+	mux.HandleFunc("/clearDone", clearDoneHandler)
+	mux.HandleFunc("/clearAll", clearAllHandler)
+	mux.HandleFunc("/toggle", toggleHandler)
+	err := http.ListenAndServe(":"+port, mux)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
