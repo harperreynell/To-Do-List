@@ -1,9 +1,10 @@
-package flow
+package main
 
 // For console application
 
 import (
 	"fmt"
+	"log"
 	l "todolist/listHandling"
 )
 
@@ -16,10 +17,10 @@ func printMenu() {
 	fmt.Println("\t99 Exit")
 }
 
-func Flow() {
+func main() {
 	todos := make([]l.Todos, 0)
 	var choice, id int = 1, 0
-	var status string
+	var status, task string
 
 	printMenu()
 
@@ -36,7 +37,11 @@ func Flow() {
 			l.PrintTodos(todos)
 		case 2:
 			fmt.Println("Type in what you have to do:")
-			l.ReadTask(&todos)
+			_, err := fmt.Scanln(&task)
+			if err != nil {
+				log.Fatal(err)
+			}
+			l.ReadTask(&todos, task)
 			l.WriteJsonToFileWithoutID(todos)
 			fmt.Println("Task was added successfully")
 		case 3:
@@ -62,7 +67,7 @@ func Flow() {
 			if (status != "opened") && (status != "closed") {
 				fmt.Println("Unable to set status")
 			}
-			l.ChangeStatus(l.TaskByID(todos, id), status)
+			l.ChangeStatus(&todos[id], status)
 			l.WriteJsonToFileWithoutID(todos)
 			fmt.Println("Status changed successfully")
 		case 5:
