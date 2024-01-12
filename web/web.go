@@ -167,6 +167,8 @@ func main() {
 		port = "3000"
 	}
 
+	log.Println("Serving on port", port, "...")
+
 	mux := http.NewServeMux()
 
 	fs := http.FileServer(http.Dir("assets"))
